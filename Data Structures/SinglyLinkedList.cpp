@@ -80,7 +80,7 @@ public:
 		if (pos == -1)
 			throw "Element not found";
 		else
-			removeByPos(pos);
+			return removeByPos(pos);
 	}
 
 	int length(){
@@ -95,7 +95,7 @@ public:
 	}
 
 	void reverse(){
-		if(head == NULL)
+		if(head == NULL || head == tail)
 			return;
 		tail = head;
 		Node *current = head, *next = head->next;
@@ -121,8 +121,6 @@ public:
 
 		return -1;
 	}
-
-
 	
 	void display(){
 		Node *current = head;
