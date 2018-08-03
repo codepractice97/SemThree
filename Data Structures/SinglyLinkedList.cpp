@@ -20,8 +20,18 @@ public:
 	SinglyLinkedList(){
 		head = tail = NULL;
 	}
-	
-	void add(int data){
+
+	void addAtBeg(int data){
+		Node *temp = new Node(data);
+		if (head == NULL)
+			head = tail = temp;
+		else {
+			temp->next = head;
+			head = temp;
+		}
+	}
+
+	void addAtEnd(int data){
 		Node *temp = new Node(data);
 		if (head == NULL)
 			head = tail = temp;
@@ -36,19 +46,56 @@ public:
 		if (head == NULL)
 			head = tail = temp;
 		else if (pos == 0){
-			temp->next = head;
-			head = temp;
+			addAtBeg(data);
 		} else {
-			Node *current = head;
-			for(int i=1;i<pos;i++){
-				if (current->next == NULL)
-					break;
+			Node *current = head, *previous = NULL;
+			for(int i=0;i<pos;i++){
+				if (current->next == NULL){
+					addAtEnd(data);
+					return;
+				}
+				previous = current;
 				current = current->next;
 			}
-			if (current->next == NULL)
-				tail = temp;
-			temp->next = current->next;
-			current->next = temp;
+			temp->next = current;
+			previous->next = temp;
+		}
+	}
+
+	int removeAtBeg(){
+		if (head == NULL)
+			throw "List Empty";
+		else if (head == tail){
+			int data = head->data;
+			delete head;
+			head = tail = NULL;
+			return data;
+		} else {
+			int data = head->data;
+			Node *temp = head->next;
+			delete head;
+			head = temp;
+			return data;
+		}
+	}
+
+	int removeAtEnd(){
+		if (head == NULL)
+			throw "List Empty";
+		else if (head == tail){
+			int data = tail->data;
+			delete tail;
+			head = tail = NULL;
+			return data;
+		} else {
+			int data = tail->data;
+			Node *current = head;
+			while(current->next != tail)
+				current = current->next;
+			current->next = NULL;
+			delete tail;
+			tail = current;
+			return data;
 		}
 	}
 
@@ -59,7 +106,7 @@ public:
 			Node *current = head, *previous = NULL;
 			for (int i = 0; i < pos; ++i){
 				if(current->next == NULL)
-					throw "Out of Bounds";
+					throw "Out of Bounds"; 
 				previous = current;
 				current = current->next;
 			}
@@ -76,11 +123,26 @@ public:
 	}
 
 	int removeByEle(int data){
-		int pos = indexOf(data);
-		if (pos == -1)
-			throw "Element not found";
-		else
-			return removeByPos(pos);
+		if(head == NULL)
+			throw "List Empty";
+		else {
+			Node *current = head, *previous = NULL;
+			while (current->data != data){
+				if(current->next == NULL)
+					throw "Element not found";
+				previous = current;
+				current = current->next;
+			}
+			if (current == head)
+				head = head->next;
+			if (current == tail)
+				tail = previous;
+			if (previous != NULL)
+				previous->next = current->next;
+			int data = current->data;
+			delete current;
+			return data;
+		}
 	}
 
 	int length(){
@@ -121,6 +183,22 @@ public:
 
 		return -1;
 	}
+
+	static SinglyLinkedList concatenate(SinglyLinkedList sll1, SinglyLinkedList sll2){
+		SinglyLinkedList sll;
+		if (sll1.head == NULL){
+			sll.head = sll2.head;
+			sll.tail = sll2.tail;
+		} else if (sll2.head == NULL){
+			sll.head = sll1.head;
+			sll.tail = sll1.tail;
+		} else {
+			sll.head = sll1.head;
+			sll1.tail->next = sll2.head;
+			sll.tail = sll2.tail;
+		}
+		return sll;
+	}
 	
 	void display(){
 		Node *current = head;
@@ -138,18 +216,21 @@ void displayChoice(SinglyLinkedList &list){
 	char choice;
 	do {
 		cout << "Choose Option:\n1. Add Elements\n2. Remove Elements\n";
-		cout << "3. Print length\n4. Reverse list\n5. Find indexOf\n6. Display list\n";
+		cout << "3. Print length\n4. Reverse list\n5. Find indexOf\n";
+		cout << "6. Concatenate\n7. Display list\n";
 		cin >> choice;
 		if (choice == '1'){
 			do {
 				int data;
 				cout << "Enter Integer to add\n";
 				cin >> data;
-				cout << "Choose Method:\n1. add(int)\n2. add(int, int)\n";
+				cout << "Choose Method:\n1. addAtBeg(int)\n2. addAtEnd(int)\n3. add(int, int)\n";
 				cin >> choice;
 				if (choice == '1')
-					list.add(data);
-				else if(choice == '2'){
+					list.addAtBeg(data);
+				else if (choice == '2')
+					list.addAtEnd(data);
+				else if(choice == '3'){
 					cout << "Enter index: ";
 					int pos;
 					cin >> pos;
@@ -164,18 +245,22 @@ void displayChoice(SinglyLinkedList &list){
 			} while (choice == 'Y' || choice == 'y');
 		} else if (choice == '2'){
 			do {
-				cout << "Choose Method:\n1. By Position\n2. By Element\n";
+				cout << "Choose Method:\n1. removeAtBeg\n2. removeAtEnd\n3. By Position\n4. By Element\n";
 				cin >> choice;
-				if (choice == '1'){
+				if (choice == '1')
+					cout << list.removeAtBeg() << " removed\n";
+				else if (choice == '2')
+					cout << list.removeAtEnd() << " removed\n";
+				else if (choice == '3'){
 					cout << "Enter Position: ";
 					int pos;
 					cin >> pos;
-					list.removeByPos(pos);
-				} else if (choice == '2'){
+					cout << list.removeByPos(pos) << " removed\n";
+				} else if (choice == '4'){
 					cout << "Enter data: ";
 					int data;
 					cin >> data;
-					list.removeByEle(data);
+					cout << list.removeByEle(data) << " removed\n";
 				} else
 					cout << "Invalid Option\n";
 				list.display();
@@ -198,7 +283,13 @@ void displayChoice(SinglyLinkedList &list){
 				cout << "Element does not exist in list\n";
 			else
 				cout << data << " exists at position " << pos << endl;
-		} else if (choice == '6')
+		}  else if (choice == '6'){
+			SinglyLinkedList list1;
+			list1.addAtBeg(69);
+			list = SinglyLinkedList::concatenate(list, list1);
+			cout << "Concatenated List: " << endl;
+			list.display();
+		} else if (choice == '7')
 			list.display();
 		else
 			cout << "Invalid Option\n";
