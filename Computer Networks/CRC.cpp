@@ -3,7 +3,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <ctime>
-//#include <conio.h>
+#include <conio.h>
 using namespace std;
 
 struct DataBundle {
@@ -80,8 +80,11 @@ public:
 
 		for(int i=0; i < dividend_size - divisor_size + 1;i++){
 
-			if (dividend[i] == 0)
+			if (dividend[i] == 0){
+				for (int j = 0; j < divisor_size; j++)
+					remainder[j] = dividend[i+j];
 				continue;
+			}
 
 			// XOR one step and put the result in dividend
 			for (int j = 0; j < divisor_size; j++){
@@ -91,8 +94,12 @@ public:
 		}
 
 		int *new_rem = new int[divisor_size-1];
-		for(int j=0;j<divisor_size-1;j++) // Extract the remainder excluding first bit
+		cout << "Rem:";
+		for(int j=0;j<divisor_size-1;j++){ // Extract the remainder excluding first bit
 			new_rem[j] = remainder[j+1];
+			cout << new_rem[j];
+		}
+		cout << endl;
 
 		return new_rem;
 	}
@@ -159,6 +166,6 @@ int main(){
 	display(encodedData);
 	cout << ( crc.checkIntegrity(encodedData) ? "Data Intact" : "Data lost" ) << endl;
 	
-	//getch();
+	getch();
 	return 0;
 }
