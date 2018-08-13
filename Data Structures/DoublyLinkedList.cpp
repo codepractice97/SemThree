@@ -1,5 +1,5 @@
 #include <iostream>
-#include <conio.h>
+//#include <conio.h>
 using namespace std;
 
 enum ORDER { LINEAR , REVERSE };
@@ -8,11 +8,9 @@ class DoublyLinkedList{
 
 	struct Node{
 		int data;
-		Node *next;
-		Node *prev;
+		Node *next, *prev;
 		Node(int d){
-			next = NULL;
-			prev = NULL;
+			next = prev = NULL;
 			data = d;
 		}
 	};
@@ -46,11 +44,11 @@ public:
 		}
 	}
 	
-	void insertFromStart(int pos, int data){
+	void insert(int pos, int data){
 		Node *temp = new Node(data);
-		if (head = NULL)
-			head= tail = temp;
-		else if (pos = 0){
+		if (head == NULL)
+			head = tail = temp;
+		else if (pos == 0){
 			insertAtBeg(data);
 		}
 		else {
@@ -60,30 +58,6 @@ public:
 					if (i<pos-1)
 						throw "Out of Bounds";
 					insertAtEnd(data);
-					return;
-				}
-			}
-			temp->next = current;
-			temp->prev = current->prev;
-			current->prev->next = temp;
-			current->prev = temp; 
-		}
-	}
-	
-	void insertFromEnd(int pos, int data){
-		Node *temp = new Node(data);
-		if (head = NULL)
-			head= tail = temp;
-		else if (pos = 0){
-			insertAtEnd(data);	
-		}
-		else {
-			Node *current = tail;
-			for (int i=0;i<pos;i++){
-				if ((current = current->prev) == NULL){
-					if (i<pos-1)
-						throw "Out of Bounds";
-					insertAtBeg(data);
 					return;
 				}
 			}
@@ -121,11 +95,10 @@ int main(){
 	dLL.insertAtBeg(2);
 	dLL.insertAtBeg(4);
 	dLL.insertAtBeg(7);
-	dLL.insertFromStart(1,22);
-	dLL.insertFromEnd(1,11);
-	dLL.display(REVERSE); // LINEAR or REVERSE
+	dLL.display(LINEAR); // LINEAR or REVERSE
+	dLL.insert(1,22);
+	dLL.display(LINEAR); // LINEAR or REVERSE
 	
-	getch();
+	//getch();
 	return 0;
 }
-	
