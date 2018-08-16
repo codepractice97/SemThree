@@ -1,5 +1,4 @@
 #include <iostream>
-//#include <conio.h>
 using namespace std;
 
 enum ORDER { LINEAR , REVERSE };
@@ -166,6 +165,17 @@ public:
 		}
 	}
 
+	int length(){
+		int size = 0;
+		Node *current = head;
+		while(current != NULL){
+			size++;
+			current = current->next;
+		}
+
+		return size;
+	}
+
 	int indexOf(int data){
 		Node *current = head;
 		int pos = 0;
@@ -179,15 +189,68 @@ public:
 		return -1;
 	}
 
-	int length(){
-		int size = 0;
+	DoublyLinkedList copy(){
+		DoublyLinkedList new_DLL;
 		Node *current = head;
-		while(current != NULL){
-			size++;
+		while (current != NULL){
+			new_DLL.insertAtEnd(current->data);
+			current =current->next;
+		}
+		return new_DLL;
+	}
+
+	void clear(){
+		Node *current = head, *next;
+		while (current != NULL){
+			next = current->next;
+			delete current;
+			current = next;
+		}
+		head = tail = NULL;
+	}
+
+	int sumAll(){
+		int sum = 0;
+		Node *current = head;
+		while (current != NULL){
+			sum += current->data;
 			current = current->next;
 		}
+		return sum;
+	}
 
-		return size;
+	void deleteAlternate(){
+		if (head == NULL || head == tail)
+			return;
+		else {
+			Node *current = head->next, *previous = head;
+			int count = 2;
+			while (current != NULL){
+				if (count % 2 == 0){
+					previous->next = current->next;
+					if (current == tail)
+						tail = previous;
+					else
+						current->next->prev = previous;
+					delete current;
+				} else {
+					// Previous increments only when node not deleted
+					previous = previous->next;
+				}
+				current = previous->next;
+				count++;
+			}
+		}
+	}
+
+	void insertMid(int data){
+		int mid = length()/2;
+		insert(mid, data);
+	}
+
+	int deleteMid(){
+		int  mid = length()/2;
+		return deleteByPos(mid);
 	}
 	
 	void display(ORDER order){
@@ -209,102 +272,76 @@ public:
 		}
 		cout << "NULL" << endl;
 	}
+
+	friend ostream & operator << (ostream &out, DoublyLinkedList &DLL);
+
+	static DoublyLinkedList concatenate(DoublyLinkedList dll1, DoublyLinkedList dll2){
+		DoublyLinkedList dll;
+		if (dll1.head == NULL){
+			dll.head = dll2.head;
+			dll.tail = dll2.tail;
+		} else if (dll2.head == NULL){
+			dll.head = dll1.head;
+			dll.tail = dll1.tail;
+		} else {
+			dll.head = dll1.head;
+			dll1.tail->next = dll2.head;
+			dll.tail = dll2.tail;
+		}
+		return dll;
+	}
+
+	DoublyLinkedList operator + (DoublyLinkedList dll2)	{
+		DoublyLinkedList dll;
+		if (head == NULL){
+			dll.head = dll2.head;
+			dll.tail = dll2.tail;
+		} else if (dll2.head == NULL){
+			dll.head = head;
+			dll.tail = tail;
+		} else {
+			dll.head = head;
+			tail->next = dll2.head;
+			dll.tail = dll2.tail;
+		}
+		return dll;
+	}
+
+	bool compareTo(DoublyLinkedList sll2){
+		Node *current1 = head, *current2 = sll2.head;
+		while(current1 != NULL || current2 != NULL){
+			if (current1->data != current2->data)
+				return false;
+			current1 = current1->next;
+			current2 = current2->next;
+			if (current1 == NULL ^ current2 == NULL)
+				return false;
+		}
+		return true;
+	}
+
+	bool operator == (DoublyLinkedList sll2){
+		Node *current1 = head, *current2 = sll2.head;
+		while(current1 != NULL || current2 != NULL){
+			if (current1->data != current2->data)
+				return false;
+			current1 = current1->next;
+			current2 = current2->next;
+			// If the size of two lists is different
+			if (current1 == NULL ^ current2 == NULL)
+				return false;
+		}
+		return true;
+	}
 	
 };
 
-void displayChoice(DoublyLinkedList &list){
-	char choice;
-	do {
-		cout << "Choose Option:\n1. Add Elements\n2. Remove Elements\n";
-		cout << "3. Print length\n4. Reverse list\n5. Find indexOf\n";
-		cout << "6. Display list\n";
-		cin >> choice;
-		if (choice == '1'){
-			do {
-				int data;
-				cout << "Enter Integer to add\n";
-				cin >> data;
-				cout << "Choose Method:\n1. addAtBeg(int)\n2. addAtEnd(int)\n3. add(int, int)\n";
-				cin >> choice;
-				if (choice == '1')
-					list.insertAtBeg(data);
-				else if (choice == '2')
-					list.insertAtEnd(data);
-				else if(choice == '3'){
-					cout << "Enter index: ";
-					int pos;
-					cin >> pos;
-					list.insert(pos, data);
-				} else
-					cout << "Invalid Option\n";
-
-				list.display(LINEAR);
-
-				cout << "Enter 'Y' to add more\n";
-				cin >> choice;
-			} while (choice == 'Y' || choice == 'y');
-		} else if (choice == '2'){
-			do {
-				cout << "Choose Method:\n1. deleteFromBeg\n2. deleteFromEnd\n3. By Position\n4. By Element\n";
-				cin >> choice;
-				if (choice == '1')
-					cout << list.deleteFromBeg() << " removed\n";
-				else if (choice == '2')
-					cout << list.deleteFromEnd() << " removed\n";
-				else if (choice == '3'){
-					cout << "Enter Position: ";
-					int pos;
-					cin >> pos;
-					cout << list.deleteByPos(pos) << " removed\n";
-				} else if (choice == '4'){
-					cout << "Enter data: ";
-					int data;
-					cin >> data;
-					cout << list.deleteByData(data) << " removed\n";
-				} else
-					cout << "Invalid Option\n";
-				list.display(LINEAR);
-
-				cout << "Enter 'Y' to remove more\n";
-				cin >> choice;
-			} while (choice == 'Y' || choice == 'y');
-		} else if (choice == '3'){
-			cout << "Length of list is: " << list.length() << endl;
-		} else if (choice == '4'){
-			list.reverse();
-			cout << "Reverse list is:" << endl;
-			list.display(LINEAR);
-		} else if (choice == '5'){
-			cout << "Enter element";
-			int data;
-			cin >> data;
-			int pos = list.indexOf(data);
-			if (pos == -1)
-				cout << "Element does not exist in list\n";
-			else
-				cout << data << " exists at position " << pos << endl;
-		} else if (choice == '6'){
-			cout << "Choose Method:\n1. LINEAR\n2. REVERSE\n";
-			cin >> choice;
-			if (choice == '1')
-				list.display(LINEAR);
-			else if (choice == '2')
-				list.display(REVERSE);
-			else
-				cout  << "Invalid Option\n";
-		}
-		else
-			cout << "Invalid Option\n";
-
-		cout << "Enter 'Y' to continue" << endl;
-		cin >> choice;
-	} while (choice == 'Y' || choice == 'y');
-}
-
-int main(){
-	DoublyLinkedList dLL;
-	displayChoice(dLL);
-	
-	//getch();
-	return 0;
+ostream & operator << (ostream &out, DoublyLinkedList &DLL) {
+	DoublyLinkedList::Node *current = DLL.head;
+	while (current != NULL){
+		out << current->data << "-->";
+		current = current->next;
+	}
+	out << "NULL" << endl;
+	return out;
 }
