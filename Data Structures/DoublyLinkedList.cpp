@@ -4,12 +4,13 @@ using namespace std;
 
 enum ORDER { LINEAR , REVERSE };
 
+template <class Type>
 class DoublyLinkedList{
 
 	struct Node{
-		int data;
+		Type data;
 		Node *next, *prev;
-		Node(int d){
+		Node(Type d){
 			next = prev = NULL;
 			data = d;
 		}
@@ -22,7 +23,7 @@ public:
 		head = tail = NULL;
 	}
 	
-	void insertAtBeg(int data){
+	void insertAtBeg(Type data){
 		Node *temp = new Node(data);
 		if(head == NULL)
 			head = tail = temp;
@@ -33,7 +34,7 @@ public:
 		}
 	}
 	
-	void insertAtEnd(int data){
+	void insertAtEnd(Type data){
 		Node *temp = new Node(data);
 		if(head == NULL)
 			head = tail = temp;
@@ -44,7 +45,7 @@ public:
 		}
 	}
 	
-	void insert(int pos, int data){
+	void insert(int pos, Type data){
 		Node *temp = new Node(data);
 		if (head == NULL)
 			head = tail = temp;
@@ -68,16 +69,16 @@ public:
 		}
 	}
 
-	int deleteFromBeg(){
+	Type deleteFromBeg(){
 		if (head == NULL)
 			throw "LL empty";
 		else if (head == tail){
-			int data = head->data;
+			Type data = head->data;
 			delete head;
 			head = tail = NULL;
 			return  data;
 		} else {
-			int data = head->data;
+			Type data = head->data;
 			head = head->next;
 			delete head->prev;
 			head->prev = NULL;
@@ -85,16 +86,16 @@ public:
 		}
 	}
 
-	int deleteFromEnd(){
+	Type deleteFromEnd(){
 		if (head == NULL)
 			throw "LL empty";
 		else if (head == tail){
-			int data = head->data;
+			Type data = head->data;
 			delete head;
 			head = tail = NULL;
 			return  data;
 		} else {
-			int data = tail->data;
+			Type data = tail->data;
 			tail = tail->prev;
 			delete tail->next;
 			tail->next = NULL;
@@ -102,7 +103,7 @@ public:
 		}
 	}
 
-	int deleteByPos(int pos){
+	Type deleteByPos(int pos){
 		if (head == NULL)
 			throw "LL empty";
 		else if (pos == 0)
@@ -117,7 +118,7 @@ public:
 			if (current == tail)
 				return deleteFromEnd();
 			else {
-				int data = current->data;
+				Type data = current->data;
 				current->prev->next = current->next;
 				current->next->prev = current->prev;
 				delete current;
@@ -126,7 +127,7 @@ public:
 		}
 	}
 
-	int deleteByData(int data){
+	Type deleteByData(Type data){
 		if (head == NULL)
 			throw "LL empty";
 		else {
@@ -141,7 +142,7 @@ public:
 			else if (current == tail)
 				return deleteFromEnd();
 			else {
-				int data = current->data;
+				Type data = current->data;
 				current->prev->next = current->next;
 				current->next->prev = current->prev;
 				delete current;
@@ -166,7 +167,7 @@ public:
 		}
 	}
 
-	int indexOf(int data){
+	int indexOf(Type data){
 		Node *current = head;
 		int pos = 0;
 		while (current != NULL){
@@ -212,7 +213,8 @@ public:
 	
 };
 
-void displayChoice(DoublyLinkedList &list){
+template <class Type>
+void displayChoice(DoublyLinkedList<Type> &list){
 	char choice;
 	do {
 		cout << "Choose Option:\n1. Add Elements\n2. Remove Elements\n";
@@ -221,7 +223,7 @@ void displayChoice(DoublyLinkedList &list){
 		cin >> choice;
 		if (choice == '1'){
 			do {
-				int data;
+				Type data;
 				cout << "Enter Integer to add\n";
 				cin >> data;
 				cout << "Choose Method:\n1. addAtBeg(int)\n2. addAtEnd(int)\n3. add(int, int)\n";
@@ -258,7 +260,7 @@ void displayChoice(DoublyLinkedList &list){
 					cout << list.deleteByPos(pos) << " removed\n";
 				} else if (choice == '4'){
 					cout << "Enter data: ";
-					int data;
+					Type data;
 					cin >> data;
 					cout << list.deleteByData(data) << " removed\n";
 				} else
@@ -276,7 +278,7 @@ void displayChoice(DoublyLinkedList &list){
 			list.display(LINEAR);
 		} else if (choice == '5'){
 			cout << "Enter element";
-			int data;
+			Type data;
 			cin >> data;
 			int pos = list.indexOf(data);
 			if (pos == -1)
@@ -302,8 +304,8 @@ void displayChoice(DoublyLinkedList &list){
 }
 
 int main(){
-	DoublyLinkedList dLL;
-	displayChoice(dLL);
+	DoublyLinkedList<int> dLL;
+	displayChoice<int>(dLL);
 	
 	//getch();
 	return 0;

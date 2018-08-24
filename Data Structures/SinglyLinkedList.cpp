@@ -1,12 +1,13 @@
 #include <iostream>
 using namespace std;
 
+template <class T>
 class SinglyLinkedList{
 
 	struct Node{
-		int data;
+		T data;
 		Node *next;
-		Node(int d){
+		Node(T d){
 			data = d;
 			next = NULL;
 		}
@@ -20,7 +21,7 @@ public:
 		head = tail = NULL;
 	}
 
-	void addAtBeg(int data){
+	void addAtBeg(T data){
 		Node *temp = new Node(data);
 		if (head == NULL)
 			head = tail = temp;
@@ -30,7 +31,7 @@ public:
 		}
 	}
 
-	void addAtEnd(int data){
+	void addAtEnd(T data){
 		Node *temp = new Node(data);
 		if (head == NULL)
 			head = tail = temp;
@@ -40,7 +41,7 @@ public:
 		}
 	}
 	
-	void add(int pos, int data){
+	void add(int pos, T data){
 		Node *temp = new Node(data);
 		if (head == NULL)
 			head = tail = temp;
@@ -61,16 +62,16 @@ public:
 		}
 	}
 
-	int removeAtBeg(){
+	T removeAtBeg(){
 		if (head == NULL)
 			throw "List Empty";
 		else if (head == tail){
-			int data = head->data;
+			T data = head->data;
 			delete head;
 			head = tail = NULL;
 			return data;
 		} else {
-			int data = head->data;
+			T data = head->data;
 			Node *temp = head->next;
 			delete head;
 			head = temp;
@@ -78,16 +79,16 @@ public:
 		}
 	}
 
-	int removeAtEnd(){
+	T removeAtEnd(){
 		if (head == NULL)
 			throw "List Empty";
 		else if (head == tail){
-			int data = tail->data;
+			T data = tail->data;
 			delete tail;
 			head = tail = NULL;
 			return data;
 		} else {
-			int data = tail->data;
+			T data = tail->data;
 			Node *current = head;
 			while(current->next != tail)
 				current = current->next;
@@ -98,7 +99,7 @@ public:
 		}
 	}
 
-	int removeByPos(int pos){
+	T removeByPos(int pos){
 		if(head == NULL)
 			throw "List Empty";
 		else {
@@ -115,13 +116,13 @@ public:
 				tail = previous;
 			if (previous != NULL)
 				previous->next = current->next;
-			int data = current->data;
+			T data = current->data;
 			delete current;
 			return data;
 		}
 	}
 
-	int removeByEle(int data){
+	T removeByEle(T data){
 		if(head == NULL)
 			throw "List Empty";
 		else {
@@ -138,7 +139,7 @@ public:
 				tail = previous;
 			if (previous != NULL)
 				previous->next = current->next;
-			int data = current->data;
+			T data = current->data;
 			delete current;
 			return data;
 		}
@@ -170,7 +171,7 @@ public:
 		head = current;
 	}
 
-	int indexOf(int data){
+	int indexOf(T data){
 		Node *current = head;
 		int pos = 0;
 		while (current != NULL){
@@ -211,7 +212,8 @@ public:
 	
 };
 
-void displayChoice(SinglyLinkedList &list){
+template <class T>
+void displayChoice(SinglyLinkedList<T> &list){
 	char choice;
 	do {
 		cout << "Choose Option:\n1. Add Elements\n2. Remove Elements\n";
@@ -220,7 +222,7 @@ void displayChoice(SinglyLinkedList &list){
 		cin >> choice;
 		if (choice == '1'){
 			do {
-				int data;
+				T data;
 				cout << "Enter Integer to add\n";
 				cin >> data;
 				cout << "Choose Method:\n1. addAtBeg(int)\n2. addAtEnd(int)\n3. add(int, int)\n";
@@ -257,7 +259,7 @@ void displayChoice(SinglyLinkedList &list){
 					cout << list.removeByPos(pos) << " removed\n";
 				} else if (choice == '4'){
 					cout << "Enter data: ";
-					int data;
+					T data;
 					cin >> data;
 					cout << list.removeByEle(data) << " removed\n";
 				} else
@@ -275,7 +277,7 @@ void displayChoice(SinglyLinkedList &list){
 			list.display();
 		} else if (choice == '5'){
 			cout << "Enter element";
-			int data;
+			T data;
 			cin >> data;
 			int pos = list.indexOf(data);
 			if (pos == -1)
@@ -283,9 +285,9 @@ void displayChoice(SinglyLinkedList &list){
 			else
 				cout << data << " exists at position " << pos << endl;
 		}  else if (choice == '6'){
-			SinglyLinkedList list1;
+			SinglyLinkedList<T> list1;
 			list1.addAtBeg(69);
-			list = SinglyLinkedList::concatenate(list, list1);
+			list = SinglyLinkedList<T>::concatenate(list, list1);
 			cout << "Concatenated List: " << endl;
 			list.display();
 		} else if (choice == '7')
@@ -299,9 +301,9 @@ void displayChoice(SinglyLinkedList &list){
 }
 
 int main(){
-	SinglyLinkedList list;
+	SinglyLinkedList<float> list;
 
-	displayChoice(list);
+	displayChoice<float>(list);
 
 	return 0;
 }

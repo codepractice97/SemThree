@@ -1,12 +1,13 @@
 #include <iostream>
 using namespace std;
 
+template <class Type>
 class CircularLinkedList{
 
 	struct Node{
-		int data;
+		Type data;
 		Node *next;
-		Node(int d){
+		Node(Type d){
 			data = d;
 			next = this;
 		}
@@ -20,7 +21,7 @@ public:
 		tail = NULL;
 	}
 
-	void addAtBeg(int data){
+	void addAtBeg(Type data){
 		Node *temp = new Node(data);
 		if (tail == NULL)
 			tail = temp;
@@ -30,7 +31,7 @@ public:
 		}
 	}
 
-	void addAtEnd(int data){
+	void addAtEnd(Type data){
 		Node *temp = new Node(data);
 		if (tail == NULL)
 			tail = temp;
@@ -41,7 +42,7 @@ public:
 		}
 	}
 	
-	void add(int pos, int data){
+	void add(int pos, Type data){
 		Node *temp = new Node(data);
 		if (tail == NULL)
 			tail = temp;
@@ -64,17 +65,17 @@ public:
 		}
 	}
 
-	int removeAtBeg(){
+	Type removeAtBeg(){
 		if (tail == NULL)
 			throw "List Empty";
 		else if (tail == tail->next){
-			int data = tail->data;
+			Type data = tail->data;
 			delete tail;
 			tail = NULL;
 			return data;
 		} else {
 			Node *head = tail->next;
-			int data = head->data;
+			Type data = head->data;
 			Node *temp = head->next;
 			delete head;
 			tail->next = temp;
@@ -82,16 +83,16 @@ public:
 		}
 	}
 
-	int removeAtEnd(){
+	Type removeAtEnd(){
 		if (tail == NULL)
 			throw "List Empty";
 		else if (tail == tail->next){
-			int data = tail->data;
+			Type data = tail->data;
 			delete tail;
 			tail = NULL;
 			return data;
 		} else {
-			int data = tail->data;
+			Type data = tail->data;
 			Node *current = tail->next;
 			while(current->next != tail)
 				current = current->next;
@@ -102,7 +103,7 @@ public:
 		}
 	}
 
-	int removeByPos(int pos){
+	Type removeByPos(int pos){
 		if (tail == NULL)
 			throw "List Empty";
 		else if (pos == 0)
@@ -118,7 +119,7 @@ public:
 			if (current == tail)
 				return removeAtEnd();
 			else {
-				int data = current->data;
+				Type data = current->data;
 				previous->next = current->next;
 				delete current;
 				return data;
@@ -126,7 +127,7 @@ public:
 		}
 	}
 
-	int removeByEle(int data){
+	Type removeByEle(Type data){
 		if (tail == NULL)
 			throw "List Empty";
 		else {
@@ -142,7 +143,7 @@ public:
 			else if (current == tail)
 				return removeAtEnd();
 			else {
-				int data = current->data;
+				Type data = current->data;
 				previous->next = current->next;
 				delete current;
 				return data;
@@ -177,7 +178,7 @@ public:
 		tail->next = current;
 	}
 
-	int indexOf(int data){
+	int indexOf(Type data){
 		Node *current = tail->next;
 		int pos = 0;
 		do {
@@ -202,7 +203,8 @@ public:
 	
 };
 
-void displayChoice(CircularLinkedList &list){
+template <class Type>
+void displayChoice(CircularLinkedList<Type> &list){
 	char choice;
 	do {
 		cout << "Choose Option:\n1. Add Elements\n2. Remove Elements\n";
@@ -211,7 +213,7 @@ void displayChoice(CircularLinkedList &list){
 		cin >> choice;
 		if (choice == '1'){
 			do {
-				int data;
+				Type data;
 				cout << "Enter Integer to add\n";
 				cin >> data;
 				cout << "Choose Method:\n1. addAtBeg(int)\n2. addAtEnd(int)\n3. add(int, int)\n";
@@ -248,7 +250,7 @@ void displayChoice(CircularLinkedList &list){
 					cout << list.removeByPos(pos) << " removed\n";
 				} else if (choice == '4'){
 					cout << "Enter data: ";
-					int data;
+					Type data;
 					cin >> data;
 					cout << list.removeByEle(data) << " removed\n";
 				} else
@@ -266,7 +268,7 @@ void displayChoice(CircularLinkedList &list){
 			list.display();
 		} else if (choice == '5'){
 			cout << "Enter element";
-			int data;
+			Type data;
 			cin >> data;
 			int pos = list.indexOf(data);
 			if (pos == -1)
@@ -284,9 +286,12 @@ void displayChoice(CircularLinkedList &list){
 }
 
 int main(){
-	CircularLinkedList list;
+	CircularLinkedList<float> list;
 
-	displayChoice(list);
+	float a =0.6756324;
+	cout << a;
+	displayChoice<float>(list);
+	
 
 	return 0;
 }
