@@ -27,7 +27,7 @@ public:
 		if (!checkSorted()){
 			throw "Array is not sorted, cannot search";
 		}
-		if (l<r){
+		if (l<=r){
 			int middle = l + (r-l)/2;
 			if (data == A[middle])
 				return middle;

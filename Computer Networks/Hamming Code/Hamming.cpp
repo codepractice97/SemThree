@@ -25,7 +25,7 @@ class HammingCode{
 
 	int **binaryMatrix;
 
-	void createBinarymatrix(int r){
+	void createBinaryMatrix(int r){
 		int size = pow(2,r);
 		binaryMatrix = new int*[size];
 		for (int i = 0;i< size;i++)
@@ -50,6 +50,11 @@ class HammingCode{
 	}
 	
 public:
+
+	HammingCode(){
+		createBinaryMatrix(r);
+	}
+
 	DataBundle encode(DataBundle dB){
 		// Calculate the number of parity bits
 		int r = 0;
@@ -62,14 +67,11 @@ public:
 		DataBundle new_dB(new_size);
 		int p_count = 0;
 		for (int i = 0; i < new_size; i++){
-			if (valueIsPowerOf2(i+1)){
-				
+			if (valueIsPowerOf2(i+1))	
 				p_count++;
-			} else
+			else
 				new_dB.data[i] = dB.data[i - p_count];
 		}
-
-		createBinarymatrix(r);
 
 		// Store parity bits at appropriate positions
 		p_count = 0;
@@ -86,13 +88,13 @@ public:
 
 	}
 	
-	void display(DataBundle *dB){
-		for(int i=0;i<dB->size;i++)
-			cout << dB->data[i] << " ";
-		cout << endl;
-	}
-	
 };
+
+void display(DataBundle *dB){
+	for(int i=0;i<dB->size;i++)
+		cout << dB->data[i] << " ";
+	cout << endl;
+}
 
 DataBundle input(){
 	char data_temp[64];
@@ -112,9 +114,9 @@ DataBundle input(){
 int main(){
 	HammingCode H;
 	DataBundle dB = input();
-	H.display(&dB);
+	display(&dB);
 	DataBundle encodedData = H.encode(dB);
-	H.display(&encodedData);
+	display(&encodedData);
 	
 	return 0;
 }
