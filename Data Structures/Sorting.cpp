@@ -17,16 +17,13 @@ public:
 	
 	void bubbleSort(){
 		int temp;
-		for(int i=0;i<size;i++)
-		{
-			for(int j=0;j<size-i-1;j++)
-			{
+		for(int i=0;i<size;i++) {
+			for(int j=0;j<size-i-1;j++) {
 				if(A[j+1]<A[j]){				
 					temp=A[j+1];
 					A[j+1]=A[j];
 					A[j]=temp;
 				}
-				
 			}
 		}
 		display();	
@@ -70,11 +67,25 @@ private:
 };
 
 int main(){
-	Sorting S;
-	S.input();
-	//S.bubbleSort();
-	//S.insertionSort();
-	S.selectionSort();
-	
+	Sorting s;
+	char choice;
+	do {
+		s.input();
+		cout << "Choose method of sorting:\n";
+		cout << "1. Bubble\n2. Insertion\n3. Selection\n";
+		cin >> choice;
+		if (choice == '1')
+			s.bubbleSort();
+		else if (choice == '2')
+			s.insertionSort();
+		else if (choice == '3')
+			s.selectionSort();
+		else
+			cout << "Invalid Option" << endl;
+
+		cout << "Press y to continue\n";
+		cin >> choice;
+	} while (choice == 'Y' || choice == 'y');
+
 	return 0;
 }
