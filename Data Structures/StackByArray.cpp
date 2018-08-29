@@ -51,6 +51,10 @@ public:
 			cout << A[i] << " ";
 		cout << endl;
 	}
+	
+	void clear(){
+		top = -1;
+	}
 };
 
 int main(){

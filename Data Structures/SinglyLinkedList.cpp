@@ -200,6 +200,22 @@ public:
 		return sll;
 	}
 	
+	SinglyLinkedList operator + (SinglyLinkedList sll2)	{
+		SinglyLinkedList sll;
+		if (head == NULL){
+			sll.head = sll2.head;
+			sll.tail = sll2.tail;
+		} else if (sll2.head == NULL){
+			sll.head = head;
+			sll.tail = tail;
+		} else {
+			sll.head = head;
+			tail->next = sll2.head;
+			sll.tail = sll2.tail;
+		}
+		return sll;
+	}
+	
 	void display(){
 		Node *current = head;
 		while(current != NULL){

@@ -60,6 +60,10 @@ public:
 			cout << A[i] << " ";
 		cout << A[rear] << endl;
 	}
+	
+	void clear(){
+		front = rear = -1;
+	}
 };
 
 int main(){

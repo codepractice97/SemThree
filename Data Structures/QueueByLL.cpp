@@ -80,6 +80,11 @@ public:
 		cout << "NULL" << endl;
 	}
 	
+	void clear(){
+		while(!isEmpty())
+			dequeue();
+	}
+	
 };
 
 template <class T>

@@ -23,27 +23,15 @@ class HammingCode{
 		return false;
 	}
 
-	int **binaryMatrix;
-
-	void createBinaryMatrix(int r){
-		int size = pow(2,r);
-		binaryMatrix = new int*[size];
-		for (int i = 0;i< size;i++)
-			binaryMatrix[i] = new int[r];
-
-		for (int i=1;i<=size;i++){
-			for (int j=0;j<r;j++){
-				if (( 1 << j) & i )
-					binaryMatrix[i-1][r-j-1] = 1;
-			}
-		}
-	}
-
-	int findParityBit(DataBundle &dB, int bit_pos){
+	int findParityBit(DataBundle &dB, int skip){
 		int parity_value = 0;
-		for (int i = 0; i < dB.size; i++){
-			if (binaryMatrix[i][bit_pos] == 1)
+		for (int i = -1; i < dB.size;){
+			i+= skip;
+			for(int j = i+skip; i< j,i<dB.size;i++){
 				parity_value = parity_value ^ dB.data[i];
+				cout << dB.data[i] << " ";
+			}
+				
 		}
 		cout << "Parity Value: " << parity_value << endl;
 		return parity_value;
@@ -51,11 +39,7 @@ class HammingCode{
 	
 public:
 
-	HammingCode(){
-		createBinaryMatrix(r);
-	}
-
-	DataBundle encode(DataBundle dB){
+	DataBundle encode(DataBundle &dB){
 		// Calculate the number of parity bits
 		int r = 0;
 		while (pow(2,r) <= r + dB.size + 1)
@@ -77,14 +61,14 @@ public:
 		p_count = 0;
 		for (int i = 0; i < new_size; i++){
 			if (valueIsPowerOf2(i+1)){
-				new_dB.data[i] = findParityBit(dB, r-p_count-1);
+				new_dB.data[i] = findParityBit(new_dB, pow(2,p_count));
 				p_count++;
 			}
 		}
 		return new_dB;
 	}
 
-	DataBundle decode(DataBundle dB){
+	DataBundle decode(DataBundle &dB){
 
 	}
 	

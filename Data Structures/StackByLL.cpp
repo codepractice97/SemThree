@@ -75,6 +75,11 @@ public:
 		cout << "NULL" << endl;
 	}
 	
+	void clear(){
+		while (!isEmpty())
+			pop();
+	}
+	
 };
 
 template <class T>
