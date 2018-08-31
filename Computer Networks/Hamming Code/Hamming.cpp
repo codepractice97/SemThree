@@ -29,6 +29,7 @@ class HammingCode{
 		}
 		return false;
 	}
+	
 
 	int findParityBit(DataBundle &dB, int skip){
 		int parity_value = 0;
