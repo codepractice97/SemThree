@@ -52,30 +52,43 @@ public:
 			if (P->proc(i)->arr_time < time_spent)
 				P->proc(i)->wait_time = time_spent - P->proc(i)->arr_time;
 			else
-				P->proc(i)->wait_time = time_spent;
-			time_spent += P->proc(i)->b_time;
+				P->proc(i)->wait_time = 0;
+			
 			if (P->proc(i)->arr_time < time_spent)
-				P->proc(i)->ta_time = time_spent - P->proc(i)->arr_time;
+				P->proc(i)->ta_time = time_spent + P->proc(i)->b_time - P->proc(i)->arr_time;
 			else
 				P->proc(i)->ta_time = P->proc(i)->b_time;
+
+			time_spent += P->proc(i)->b_time;
 		}
 		cout << "OK2";
 		
 		displayProcesses(P);
 		displayResults(P);
 	}
+
+	void SRJF(Processes *P){
+		
+	}
 	
 	void SJF(Processes *P){
 		sort(P);
 		FCFS(P);
-		displayResults(P);
 	}
 	
 	void sort(Processes *P){
-		for(int i=0;i<P->size;i++){
-			for(int j=0;j<P->size;j++){
-				if (P->proc(i));
+		Process temp;
+		int time_spent = 0;
+		for(int i=0;i<P->size;i++) {
+			for(int j=0;j<P->size-1;j++) {
+				if( P->proc(j+1)->b_time < P->proc(j)->b_time || 
+						P->proc(j)->arr_time > time_spent ){
+					temp = P->p[j+1];
+					P->p[j+1] = P->p[j];
+					P->p[j] = temp;
+				}
 			}
+			time_spent += P->proc(i)->b_time;
 		}
 	}
 	
@@ -87,11 +100,11 @@ Processes input(){
 	cin >> size;
 	Processes processes(size);
 	for(int i=0;i<size;i++){
-		cout << "Enter process name: ";
+		//cout << "Enter process name: ";
 		cin >> processes.proc(i)->p_name;
-		cout << "Enter burst time: ";
+		//cout << "Enter burst time: ";
 		cin >> processes.proc(i)->b_time;
-		cout << "Enter arrival time: ";
+		//cout << "Enter arrival time: ";
 		cin >> processes.proc(i)->arr_time;
 	}
 	return processes;
@@ -102,4 +115,5 @@ int main(){
 	
 	Scheduler S;
 	S.FCFS(&p);
+	S.SJF(&p);
 }

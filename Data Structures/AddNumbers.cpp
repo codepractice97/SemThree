@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <cmath>
 #include "StackByLL.cpp"
 
 using namespace std;
@@ -29,12 +30,13 @@ void input(Stack<int> &s1, Stack<int> &s2){
 	}
 }
 
-Stack<int> add(Stack<int> &s1, Stack<int> &s2){
-	Stack<int> s;
+template <class T>
+Stack<T> add(Stack<T> &s1, Stack<T> &s2){
+	Stack<T> s;
 	
 	int carry = 0;
 	
-	while (!s1.isEmpty() && !s2.isEmpty()){
+	while (!s1.isEmpty() || !s2.isEmpty()){
 		int num1, num2;
 		if (!s1.isEmpty())
 			num1 = s1.pop();
@@ -46,14 +48,21 @@ Stack<int> add(Stack<int> &s1, Stack<int> &s2){
 			num2 = 0;
 		int sum = carry + num1 + num2;
 		carry = sum / 10;
-		s.push(sum%10 + 48);
+		s.push(sum%10);
 	}
 	
 	if (carry != 0){
-		s.push(carry + 48)
+		s.push(carry);
 	}
 	
 	return s;
+}
+
+string toString(Stack<int> sum){
+	string num = "";
+	while (!sum.isEmpty())
+		num += (sum.pop() + 48);
+	return num;
 }
 
 int main(){
@@ -61,8 +70,10 @@ int main(){
 	
 	try{
 		input(s1, s2);
+		Stack<int> sum = add<int>(s1, s2);
+		cout << "Sum is: " << toString(sum) << endl;
 	} catch(const char c){
-		cout << c;
+		cout << c << endl;
 	}
 	
 }
