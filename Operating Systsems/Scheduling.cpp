@@ -62,33 +62,46 @@ public:
 			time_spent += P->proc(i)->b_time;
 		}
 		cout << "OK2";
-		
 		displayProcesses(P);
 		displayResults(P);
 	}
 
 	void SRJF(Processes *P){
-		
+		sortJobsArrivalAscending(P);
+		int time_spent = 0;
+		for (int i=0; i< P->size; i++){
+
+		}
 	}
 	
 	void SJF(Processes *P){
-		sort(P);
+		sortJobsBurstAscending(P);
 		FCFS(P);
 	}
 	
-	void sort(Processes *P){
+	void sortJobsBurstAscending(Processes *P){
 		Process temp;
-		int time_spent = 0;
 		for(int i=0;i<P->size;i++) {
 			for(int j=0;j<P->size-1;j++) {
-				if( P->proc(j+1)->b_time < P->proc(j)->b_time || 
-						P->proc(j)->arr_time > time_spent ){
+				if( P->proc(j+1)->b_time < P->proc(j)->b_time ){
 					temp = P->p[j+1];
 					P->p[j+1] = P->p[j];
 					P->p[j] = temp;
 				}
 			}
-			time_spent += P->proc(i)->b_time;
+		}
+	}
+
+	void sortJobsArrivalAscending(Processes *P){
+		Process temp;
+		for(int i=0;i<P->size;i++) {
+			for(int j=0;j<P->size-1;j++) {
+				if( P->proc(j+1)->arr_time < P->proc(j)->arr_time ){
+					temp = P->p[j+1];
+					P->p[j+1] = P->p[j];
+					P->p[j] = temp;
+				}
+			}
 		}
 	}
 	
