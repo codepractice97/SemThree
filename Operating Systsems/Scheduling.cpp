@@ -49,17 +49,7 @@ public:
 		cout << "OK1";
 		int time_spent = 0;
 		for (int i=0; i<P->size; i++){
-			if (P->proc(i)->arr_time < time_spent)
-				P->proc(i)->wait_time = time_spent - P->proc(i)->arr_time;
-			else
-				P->proc(i)->wait_time = 0;
-			
-			if (P->proc(i)->arr_time < time_spent)
-				P->proc(i)->ta_time = time_spent + P->proc(i)->b_time - P->proc(i)->arr_time;
-			else
-				P->proc(i)->ta_time = P->proc(i)->b_time;
-
-			time_spent += P->proc(i)->b_time;
+			calculateProcessExecution(P->proc(i), time_spent);
 		}
 		cout << "OK2";
 		displayProcesses(P);
@@ -69,9 +59,24 @@ public:
 	void SRJF(Processes *P){
 		sortJobsArrivalAscending(P);
 		int time_spent = 0;
-		for (int i=0; i< P->size; i++){
-
+		Processes *activeP = new Processes(P->size);
+		activeP->size = 0;
+		int execute_count = 0;
+		for (int i=0; i< P->size ; i++){
+			int current_arrival_time = P->proc(activeP->size)->arr_time;
+			for (int j=activeP->size; j< P->size &&
+				 P->proc(j)->arr_time <= current_arrival_time; j++){
+				cout << "Hello\n";
+				activeP->p[activeP->size] = *P->proc(j);
+				activeP->size++;
+			}
+			sortJobsBurstAscending(activeP);
+			calculateProcessExecution(&activeP->p[execute_count], time_spent);
+			execute_count++;
 		}
+		
+		displayProcesses(activeP);
+		displayResults(activeP);
 	}
 	
 	void SJF(Processes *P){
@@ -105,6 +110,20 @@ public:
 		}
 	}
 	
+	void calculateProcessExecution(Process *P, int &time_spent){
+		cout << "Time SPent: " << time_spent <<endl;
+		if (P->arr_time < time_spent){
+			P->wait_time = time_spent - P->arr_time;
+			P->ta_time = time_spent + P->b_time - P->arr_time;
+		}
+		else{
+			P->wait_time = 0;
+			P->ta_time = P->b_time;
+		}
+		
+		time_spent += P->b_time;
+	}
+	
 };
 
 Processes input(){
@@ -129,4 +148,5 @@ int main(){
 	Scheduler S;
 	S.FCFS(&p);
 	S.SJF(&p);
+	S.SRJF(&p);
 }
