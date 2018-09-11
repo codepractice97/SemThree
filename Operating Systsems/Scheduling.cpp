@@ -39,19 +39,16 @@ void displayResults(Processes *P){
 	avg_wait_time /= P->size;
 	cout << "Average turn around time: " << avg_ta_time << endl;
 	cout << "Average waiting time: " << avg_wait_time << endl;
-
 }
 
 class Scheduler{
 public:
 
 	void FCFS(Processes *P){
-		cout << "OK1";
 		int time_spent = 0;
 		for (int i=0; i<P->size; i++){
 			calculateProcessExecution(P->proc(i), time_spent);
 		}
-		cout << "OK2";
 		displayProcesses(P);
 		displayResults(P);
 	}
@@ -59,35 +56,31 @@ public:
 	void SRJF(Processes *P){
 		sortJobsArrivalAscending(P);
 		int time_spent = 0;
-		Processes *activeP = new Processes(P->size);
-		activeP->size = 0;
-		int execute_count = 0;
 		for (int i=0; i< P->size ; i++){
-			int current_arrival_time = P->proc(activeP->size)->arr_time;
-			for (int j=activeP->size; j< P->size &&
-				 P->proc(j)->arr_time <= current_arrival_time; j++){
-				cout << "Hello\n";
-				activeP->p[activeP->size] = *P->proc(j);
-				activeP->size++;
+			int active_process_count = 0;
+			if (time_spent < P->proc(i)->arr_time){
+				 time_spent = P->proc(i)->arr_time;
 			}
-			sortJobsBurstAscending(activeP);
-			calculateProcessExecution(&activeP->p[execute_count], time_spent);
-			execute_count++;
+			int curr_arr_time = time_spent;
+			for (int j = i; j < P->size && 
+					P->proc(j)->arr_time <= curr_arr_time; j++ )
+				active_process_count++;
+			sortJobsBurstAscending(P, i, active_process_count + i);
+			calculateProcessExecution(&P->p[i], time_spent);
 		}
-		
-		displayProcesses(activeP);
-		displayResults(activeP);
+		displayProcesses(P);
+		displayResults(P);
 	}
 	
 	void SJF(Processes *P){
-		sortJobsBurstAscending(P);
+		sortJobsBurstAscending(P, 0, P->size);
 		FCFS(P);
 	}
 	
-	void sortJobsBurstAscending(Processes *P){
+	void sortJobsBurstAscending(Processes *P, int start, int end){
 		Process temp;
-		for(int i=0;i<P->size;i++) {
-			for(int j=0;j<P->size-1;j++) {
+		for(int i = start; i < end; i++) {
+			for(int j = start; j < end - 1; j++) {
 				if( P->proc(j+1)->b_time < P->proc(j)->b_time ){
 					temp = P->p[j+1];
 					P->p[j+1] = P->p[j];
@@ -111,7 +104,6 @@ public:
 	}
 	
 	void calculateProcessExecution(Process *P, int &time_spent){
-		cout << "Time SPent: " << time_spent <<endl;
 		if (P->arr_time < time_spent){
 			P->wait_time = time_spent - P->arr_time;
 			P->ta_time = time_spent + P->b_time - P->arr_time;
@@ -120,7 +112,6 @@ public:
 			P->wait_time = 0;
 			P->ta_time = P->b_time;
 		}
-		
 		time_spent += P->b_time;
 	}
 	

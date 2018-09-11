@@ -137,7 +137,7 @@ public:
 				if (current == NULL)
 					throw "Out Of Bounds";
 			}
-			if (current = head)
+			if (current == head)
 				return deleteFromBeg();
 			else if (current == tail)
 				return deleteFromEnd();
