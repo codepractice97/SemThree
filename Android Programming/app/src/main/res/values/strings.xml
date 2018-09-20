@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">AndroidPracticals</string>
+    <string name="hello_world">Hello World</string>
+    <string name="lifecycle">Activity Lifecycle</string>
+    <string name="explicit">Explicit Intent</string>
+    <string name="implicit">Implicit Intent</string>
+    <string name="login">Login</string>
+    <string name="background">Three background</string>
+    <string name="spinner">Spinner</string>
+
+    <string-array name="spinner_options">
+        <item>INDIA</item>
+        <item>CHINA</item>
+    </string-array>
+</resources>
