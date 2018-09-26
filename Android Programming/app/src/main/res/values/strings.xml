@@ -7,9 +7,17 @@
     <string name="login">Login</string>
     <string name="background">Three background</string>
     <string name="spinner">Spinner</string>
+    <string name="menu">Menu Show Selected Text</string>
+    <string name="radio">Radio Group</string>
 
     <string-array name="spinner_options">
         <item>INDIA</item>
         <item>CHINA</item>
     </string-array>
+
+    <string name="menu_item_1">Item 1</string>
+    <string name="menu_item_2">Item 2</string>
+    <string name="menu_item_3">Item 3</string>
+    <string name="menu_item_4">Item 4</string>
+    <string name="menu_item_5">Item 5</string>
 </resources>

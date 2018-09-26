@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RadioGroup">
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <RadioButton
+            android:id="@+id/radio_button_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Botany"/>
+        <RadioButton
+
+            android:id="@+id/radio_button_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chemistry"/>
+        <RadioButton
+            android:id="@+id/radio_button_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Commerce"/>
+        <RadioButton
+            android:id="@+id/radio_button_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Computer Science"/>
+        <RadioButton
+            android:id="@+id/radio_button_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Economics"/>
+        <RadioButton
+            android:id="@+id/radio_button_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="English"/>
+        <RadioButton
+            android:id="@+id/radio_button_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Geography"/>
+        <RadioButton
+            android:id="@+id/radio_button_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hindi"/>
+        <RadioButton
+            android:id="@+id/radio_button_9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="History"/>
+        <RadioButton
+            android:id="@+id/radio_button_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mathematics"/>
+        <RadioButton
+            android:id="@+id/radio_button_11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Philosophy"/>
+        <RadioButton
+            android:id="@+id/radio_button_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Physical Education"/>
+        <RadioButton
+            android:id="@+id/radio_button_13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Physics"/>
+        <RadioButton
+            android:id="@+id/radio_button_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Political Science"/>
+        <RadioButton
+            android:id="@+id/radio_button_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zoology"/>
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/radio_button_selected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="bottom"/>
+
+</LinearLayout>
