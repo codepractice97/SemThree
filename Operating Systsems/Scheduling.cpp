@@ -80,13 +80,9 @@ public:
 
 			int burst_time = P.at(i).b_time;
 			// Find pre-emptive burst time
-			if (j < P.size()){
-				int active_processes2 = 0, time_spent_temp = P.at(j).arr_time;
-				for (int k = j; k < P.size() && P.at(k).arr_time <= time_spent_temp; k++)
-					active_processes2++;
-				sortJobsRemainingBurstAscending(P, j, active_processes2 + j);
+			if (j < P.size())
 				burst_time = P.at(j).arr_time - time_spent;
-			}
+
 			if ( !calculateProcessExecution(P.at(i), time_spent, burst_time) )
 				i--; // Re process the process if not complete
 		}
@@ -114,7 +110,7 @@ public:
 	}
 
 	void priorityScheduling(deque <Process> &P){
-		sortPriority(P);
+		sortPriority(P, 0, P.size());
 		int time_spent = 0;
 		for (int i=0; i<P.size(); i++){
 			if (time_spent < P.at(i).arr_time)
@@ -125,10 +121,33 @@ public:
 		displayResults(P);
 	}
 
-	void sortPriority(deque <Process> &P){
+	void priorityPreemptiveScheduling(deque <Process> &P){
+		sortJobsArrivalAscending(P);
+		int time_spent = 0;
+		for (int i=0; i < P.size();i++){
+			if (time_spent < P.at(i).arr_time)
+				time_spent = P.at(i).arr_time;
+			int active_processes = 0, j;
+			for (j = i; j < P.size() && P.at(j).arr_time <= time_spent; j++)
+				active_processes++;
+			sortPriority(P, i, active_processes + i);
+
+			int burst_time = P.at(i).b_time;
+			// Find pre-emptive burst time
+			if (j < P.size())
+				burst_time = P.at(j).arr_time - time_spent;
+
+			if ( !calculateProcessExecution(P.at(i), time_spent, burst_time) )
+				i--; // Re process the process if not complete
+		}
+		displayProcesses(P);
+		displayResults(P);
+	}
+
+	void sortPriority(deque <Process> &P, int start, int end){
 		Process temp;
-		for(int i=0; i < P.size(); i++) {
-			for(int j=0; j < P.size() - 1; j++) {
+		for(int i = start; i < end; i++) {
+			for(int j = start; j < end - 1; j++) {
 				if( P.at(j+1).priority < P.at(j).priority ){
 					temp = P.at(j+1);
 					P.at(j+1) = P.at(j);
@@ -205,7 +224,7 @@ int main(){
 	Scheduler S;
 	char choice;
 	cout << "Choose Scheduling Method: \n1. FCFS\n2. SJF\n3. SRJF\n";
-	cout << "4. Round Robin\n5. Priority\n";
+	cout << "4. Round Robin\n5. Priority\n6. Priority Pre-emptive\n";
 	cin >> choice;
 	if (choice == '1')
 		S.FCFS(processes);
@@ -225,6 +244,14 @@ int main(){
 			cin >> processes.at(i).priority;
 		}
 		S.priorityScheduling(processes);
+	} else if(choice == '6') {
+		cout << "Enter priorities of processes\n";
+		cout << "Lower values corresponding to higher priority\n";
+		for(int i = 0; i < processes.size(); i++){
+			cout << "Enter Process " << i << " priority" << endl;
+			cin >> processes.at(i).priority;
+		}
+		S.priorityPreemptiveScheduling(processes);
 	} else {
 		cout << "Invalid Option, running SRJF scheduling\n";
 		S.SRJF(processes);

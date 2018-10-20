@@ -9,6 +9,7 @@
     <string name="spinner">Spinner</string>
     <string name="menu">Menu Show Selected Text</string>
     <string name="radio">Radio Group</string>
+    <string name="db">Database</string>
 
     <string-array name="spinner_options">
         <item>INDIA</item>

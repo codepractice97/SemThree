@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Database">
+
+    <EditText
+        android:id="@+id/database_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/add_in_db"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addDB"
+            android:text="ADD"/>
+        <Button
+            android:id="@+id/remove_in_db"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="removeDB"
+            android:text="DELETE"/>
+        <Button
+            android:id="@+id/update_in_db"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="updateDB"
+            android:text="UPDATE LAST"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/db_contents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
