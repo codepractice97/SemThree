@@ -139,11 +139,83 @@ public:
 	}
 
 	void deleteByCopy(T data){
-
+		if (root == NULL)
+			throw "Tree empty";
+		else {
+			Node *current = root, *parent = NULL;
+			while (current != NULL && current->data != data){
+				parent = current;
+				if (data < current->data)
+					current = current->left;
+				else if (data > current->data)
+					current = current->right;
+			}
+			if (current == NULL)
+				throw "Data not found";
+			else {
+				if (current->left == NULL) { // To delete node has no left child
+					if (parent == NULL)
+						root = root->right;
+					else
+						parent->right = current->right;
+				}
+				else if (current->right == NULL) { // To delete node has no right child
+					if (parent == NULL)
+						root = root->left;
+					else
+						parent->left = current->left;
+				}
+				else { // To delete node has both child
+					Node *temp = current->left;
+					parent = current;
+					while(temp->right != NULL){
+						parent = temp;
+						temp = temp->right;
+					}
+					current->data = temp->data;
+					if (parent == current)
+						parent->left = temp->left;
+					else
+						parent->right = temp->left;
+					current = temp;
+				}
+				delete current;
+			}
+		}
 	}
 
 	void deleteByMerge(T data){
-
+		if (root == NULL)
+			throw "Tree empty";
+		else {
+			Node *current = root, *parent = NULL;
+			while (current != NULL && current->data != data){
+				parent = current;
+				if (data < current->data)
+					current = current->left;
+				else if (data > current->data)
+					current = current->right;
+			}
+			if (current == NULL)
+				throw "Data not found";
+			else {
+				if (parent == NULL)
+					root = root->left;
+				else if (parent->left == current)
+					parent->left = current->left;
+				else if (parent->right == current)
+					parent->right = current->left;
+				Node *temp = current->left;
+				if (temp != NULL){
+					while(temp->right != NULL)
+						temp = temp->right;
+					temp->right = current->right;
+				} else if (temp == NULL && current->right != NULL){
+					parent->right = current->right;
+				}
+				delete current;
+			}
+		}
 	}
 
 	void breadthFirst(){
@@ -302,7 +374,7 @@ int main(){
 			}
 		}
 		catch(const char * c){
-			cout << c;
+			cout << c << endl;
 		}
 
 		cout << "Enter 'Y' to continue\n";
