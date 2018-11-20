@@ -33,6 +33,7 @@
         <activity android:name=".MenuShowSelectedText" />
         <activity android:name=".RadioGroup" />
         <activity android:name=".Database" />
+        <activity android:name=".LoginAndLogout" />
     </application>
 
 </manifest>

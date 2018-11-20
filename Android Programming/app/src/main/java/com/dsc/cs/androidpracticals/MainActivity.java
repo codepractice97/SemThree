@@ -10,10 +10,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button button[];
     final int button_id[] = {R.id.button1, R.id.button2, R.id.button3, R.id.button4,
-            R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9, R.id.button10};
+            R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9
+            , R.id.button10, R.id.button11};
     final Class activity_list[] = {HelloWorld.class, Lifecycle.class,
             ExplicitIntent.class, Login.class, ThreeBackground.class, Spinner.class,
-            ImplicitIntent.class, MenuShowSelectedText.class, RadioGroup.class, Database.class };
+            ImplicitIntent.class, MenuShowSelectedText.class, RadioGroup.class, Database.class
+            , LoginAndLogout.class };
 
 
     @Override
