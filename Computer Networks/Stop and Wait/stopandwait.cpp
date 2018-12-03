@@ -1,52 +1,78 @@
 #include <iostream>
+#include <ctime>
 using namespace std;
 
 class Receiver {
 public:
-	int data[50], size, sequenceNumber = 0;
+	int sequenceNumber = 0;
+	string data = "";
 
-	int set(int data, int sn){
-		if (sn == sequenceNumber){
-			data[size] == data;
-			size++;
-			display(data, size);
-			return !sequenceNumber;
-		} else {
-			cout << "Duplicate Frame Discarded" << endl;
-			display(data, size);
+	int set(char d, int sn){
+		int network_outcome = rand() % 3;
+		if (network_outcome == 0) {
+			cout << "RECEIVER: Data Received\n";
+			if (sn == sequenceNumber){
+				data += d;
+				sequenceNumber = !sequenceNumber;
+			} else {
+				cout << "RECEIVER: Duplicate Frame Discarded\n";
+			}
+			cout << "RECEIVER: Data: " << data << endl;
+			return sequenceNumber;
+		} else if (network_outcome == 1) {
+			cout << "RECEIVER: Data Not Received\n";
+			cout << "RECEIVER: Data: " << data << endl;
+			throw 0;
+		} else if (network_outcome == 2) {
+			cout << "RECEIVER: Data Received but Acknowledgement lost\n";
+			if (sn == sequenceNumber){
+				data += d;
+				sequenceNumber = !sequenceNumber;
+			} else {
+				cout << "RECEIVER: Duplicate Frame Discarded" << endl;	
+			}
+			cout << "RECEIVER: Data: " << data << endl;
+			throw 0;
 		}
 	}
 };
 
 class Sender {
 public:
-	int data[50], size, sequenceNumber = 0;
+	int size, sequenceNumber = 0;
+	string data;
 	Receiver receiver;
+
+	void input(){
+		cout << "Enter data to transfer:\n";
+		cin >> data;
+		size = data.length();
+	}
 
 	void transfer(){
 		for(int i=0; i < size;){
 			try {
-				int ack = receiver.set(data[i], sequenceNumber);
+				cout << "SENDER: Data Sent(" << data.at(i) << ")\n";
+				int ack = receiver.set(data.at(i), sequenceNumber);
 				if (ack != sequenceNumber){
-					i++; sequenceNumber = !sequenceNumber;
+					i++;
+					sequenceNumber = !sequenceNumber;
 				}
-				else
-					cout << "Data lost" << endl;
 			} catch(const int &requestTimeOut){
-				cout << "Acknowledgement lost" << endl;
+				cout << "SENDER: Data/Acknowledgement lost" << endl;
 			}
 		}
 	}
 
 };
 
-void display(int *A, int size){
-	for (int i = 0;i < size; i++)
-		cout << A[i] << " ";
-	cout << endl;
-}
-
 
 int main(){
-	transfer();
+	srand(time(NULL));
+
+	Sender sender;
+	sender.input();
+	sender.transfer();
+
+	return 0;
 }
