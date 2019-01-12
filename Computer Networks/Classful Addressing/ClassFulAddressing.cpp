@@ -64,6 +64,5 @@ int main(){
 	} catch (const char *str){
 		cout << str << endl;
 	}
-
 	return 0;
 }
