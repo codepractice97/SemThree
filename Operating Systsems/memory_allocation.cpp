@@ -195,4 +195,6 @@ int main()
 {
 	MemoryFit m;
 	m.prog();
+	
+	retrun 0;
 }
